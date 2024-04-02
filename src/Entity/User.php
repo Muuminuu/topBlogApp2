@@ -24,6 +24,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
+    #[ORM\Column(type: 'string')]
+    private string $brochureFilename;
+
     /**
      * @var list<string> The user roles
      */
@@ -69,6 +72,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     
+
+    public function getBrochureFilename(): string
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename(string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
+
+        return $this;
+    }
+
     /**
      * A visual identifier that represents this user.
      *

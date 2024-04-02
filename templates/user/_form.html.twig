@@ -1,4 +1,9 @@
+
+
+<h1>Create your account</h1>
+
 {{ form_start(form) }}
     {{ form_widget(form) }}
+    {# <a href="{{ asset('uploads/brochures/' ~ user.brochureFilename) }}">View brochure (PDF)</a> #}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
