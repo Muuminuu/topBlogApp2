@@ -1,0 +1,13 @@
+{% extends 'layout/base_admin.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+
+
+{% block body %}
+<a href="{{ path('app_admin_user_index')}}">Manage Users</a>
+
+<a href="{{ path('app_admin_post_index')}}">Manage Posts</a>
+
+
+{% endblock %}
