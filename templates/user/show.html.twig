@@ -5,7 +5,7 @@
 {% block body %}
     <h1>User</h1>
     <div class="d-flex">
-        <img class="mx-3 mt-4" style="max-width: 200px; max-height: 150px" src="{{ asset('uploads/brochures/' ~ user.brochureFilename) }}" alt="{{ user.brochureFilename }}"/>
+        <img class="mx-3 mt-4" style="max-width: 200px; max-height: 150px" src="{{ asset('data/uploads/avatars/' ~ user.avatarFilename) }}" alt="{{ user.avatarFilename }}"/>
         <table class="table">
             <tbody>
                 <tr>
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th>Avatar File</th>
-                    <td><a href="{{ asset('uploads/brochures/' ~ user.brochureFilename) }}">{{ user.brochureFilename }} </a></td>
+                    <td><a href="{{ asset('data/uploads/avatars/' ~ user.avatarFilename) }}">{{ user.avatarFilename }} </a></td>
                 </tr>
                 {# <tr>
                     <th>Roles</th>

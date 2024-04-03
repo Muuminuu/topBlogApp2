@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Avatar</th>
                 <th>Email</th>
                 <th>Username</th>
                 <th>Roles</th>
@@ -19,6 +20,11 @@
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
+                <td>
+                    {% if user.avatar is not null %}
+                        <img width="200" height="auto" src="{{ path('app_serve_private_file', {'path' : user.avatar.filename }) }}" alt="{{user.avatar.filename}}"
+                    {% endif %}
+                </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>

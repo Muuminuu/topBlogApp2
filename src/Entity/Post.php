@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -42,6 +44,10 @@ class Post
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $slug;
+
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    private ?UploadFile $image = null;
+
 
     public function getId(): ?int
     {
@@ -116,6 +122,22 @@ class Post
         $slugger = new AsciiSlugger;
         $this->slug = $slugger->slug($this->title);
         unset($slugger);
+    }
+
+    /**
+     * @return UploadFile|null
+     */
+
+    public function getImage(): ?UploadFile
+    {
+        return $this->image;
+    }
+
+    public function setImage(?UploadFile $image): static
+    {
+        $this->image = $image;
+
+        return $this;
     }
 
 }

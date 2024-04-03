@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Slug</th>
                 <th>Title</th>
+                <th>Image</th>
                 <th>Published</th>
                 <th>CreatedAt</th>
                 <th>ModifiedAt</th>
@@ -27,6 +28,11 @@
                     </a>
                 </td>
                 <td>{{ post.title }}</td>
+                <td>
+                    {% if post.image is not null %}
+                        <img width="200" height="auto" src="{{ asset('uploads/images/' ~ post.image.filename) }}" alt="{{post.image.filename}}"
+                    {% endif %}
+                </td>
                 <td>{{ post.published ? 'Yes' : 'No' }}</td>
                 <td>{{ post.createdAt ? post.createdAt|date('d-m-Y') : '' }}</td>
                 <td>{{ post.modifiedAt ? post.modifiedAt|date('d-m-Y') : '' }}</td>

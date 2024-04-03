@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Entity\UploadFile;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -24,8 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
-    #[ORM\Column(type: 'string')]
-    private string $brochureFilename;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?UploadFile $avatar = null;
 
     /**
      * @var list<string> The user roles
@@ -41,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    // #[ORM\Column(length: 255, nullable: true)]
+    // private ?string $avatarFilename = null;
 
     public function getId(): ?int
     {
@@ -72,18 +76,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     
-
-    public function getBrochureFilename(): string
-    {
-        return $this->brochureFilename;
-    }
-
-    public function setBrochureFilename(string $brochureFilename): self
-    {
-        $this->brochureFilename = $brochureFilename;
-
-        return $this;
-    }
 
     /**
      * A visual identifier that represents this user.
@@ -151,6 +143,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?UploadFile
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?UploadFile $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

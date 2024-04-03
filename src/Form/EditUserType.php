@@ -15,10 +15,10 @@ class EditUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', TextType::class,)
-            ->add('username', TextType::class,)
-            ->add('brochure', FileType::class, [
-                'label' => 'Brochure (PDF file)',
+            ->add('email', TextType::class)
+            ->add('username', TextType::class)
+            ->add('avatar', FileType::class, [
+                'label' => 'Avatar (Image file)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -26,12 +26,13 @@ class EditUserType extends AbstractType
                         'maxSize' => '4096k',
                         'mimeTypes' => [
                             'image/jpeg',
+                            'image/jpg',
                             'image/png',
-                            'image/svg+xml'
+                            'image/webp'
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'Please upload a valid image',
                     ])
-                    ],
+                ],
             ])
         ;
     }
@@ -39,7 +40,7 @@ class EditUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => User::class
         ]);
     }
 }

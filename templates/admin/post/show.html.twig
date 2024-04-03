@@ -20,6 +20,12 @@
                 <td>{{ post.content }}</td>
             </tr>
             <tr>
+                <th>Image</th>
+                <td>
+                    <img width="200" height="auto" src="{{ asset('uploads/images/' ~ user.image.filename) }}" alt="{{user.image.filename}}">
+                </td>
+            </tr>
+            <tr>
                 <th>Published</th>
                 <td>{{ post.published ? 'Yes' : 'No' }}</td>
             </tr>

@@ -46,11 +46,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $brochureFile = $form->get('brochure')->getData();
+            $avatarFile = $form->get('avatar')->getData();
 
-            if ($brochureFile) {
-                $brochureFileName = $fileUploader->upload($brochureFile);
-                $user->setBrochureFilename($brochureFileName);
+            if ($avatarFile) {
+                $avatarFileName = $fileUploader->uploadPrivate($avatarFile);
+                $user->setAvatarFilename($avatarFileName);
             }
 
             $entityManager->flush();

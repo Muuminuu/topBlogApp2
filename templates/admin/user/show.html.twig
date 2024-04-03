@@ -12,6 +12,14 @@
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
+                <th>Avatar</th>
+                <td>
+                    {% if user.avatar is not null %}
+                        <img width="200" height="auto" src="{{ path('app_serve_private_file', {'path' : user.avatar.filename }) }}" alt="{{user.avatar.filename}}"
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td>{{ user.email }}</td>
             </tr>

@@ -3,13 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Post;
+use App\Service\FileUploader;
 use App\Form\Admin\AdminPostType;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/admin/post')]
 class AdminPostController extends AbstractController
@@ -23,17 +25,30 @@ class AdminPostController extends AbstractController
     }
 
     #[Route('/new', name: 'app_admin_post_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $post = new Post();
         $form = $this->createForm(AdminPostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+
+            if ($image) {
+                try {
+                    $imageToAdd = $fileUploader->upload($image, 'public_image_directory', false, $post->getImage());
+                    $entityManager->persist($imageToAdd);
+                    $post->setImage($imageToAdd);
+                    $this->addFlash('success', 'Image updated successfully!');
+                } catch (FileException $e) {
+                    $this->addFlash('danger', $e->getMessage());
+                }
+            }
             $entityManager->persist($post);
             $entityManager->flush();
+            $this->addFlash('success', 'Post updated successfully!');
 
-            return $this->redirectToRoute('app_admin_post_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_post_show', ['id' => $post->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/post/new.html.twig', [
@@ -83,16 +98,30 @@ class AdminPostController extends AbstractController
     public function edit(
         Request $request, 
         Post $post, 
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        FileUploader $fileUploader
     ): Response
     {
+
         $form = $this->createForm(AdminPostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $image = $form->get('image')->getData();
 
-            return $this->redirectToRoute('app_admin_post_index', [], Response::HTTP_SEE_OTHER);
+            if ($image) {
+                try {
+                    $imageToAdd = $fileUploader->upload($image, 'public_image_directory', false, $post->getImage());
+                    $entityManager->persist($imageToAdd);
+                    $post->setImage($imageToAdd);
+                    $this->addFlash('success', 'Image updated successfully!');
+                } catch (FileException $e) {
+                    $this->addFlash('danger', $e->getMessage());
+                }
+            }
+            $entityManager->flush();
+            $this->addFlash('success', 'Post updated successfully!');
+            return $this->redirectToRoute('app_admin_post_show', ['id' => $post->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/post/edit.html.twig', [
